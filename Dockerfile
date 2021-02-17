@@ -1,4 +1,8 @@
-FROM golang:buster
+FROM golang:1.16-buster
+
+# As of v1.16 module-aware mode is enabled by default, regardless of whether a go.mod file is present in the current working directory or a parent directory.
+# More precisely, the GO111MODULE environment variable now defaults to on.
+ENV GO111MODULE auto
 
 RUN apt-get update && apt-get --no-install-recommends -y install \
     git \
