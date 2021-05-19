@@ -26,7 +26,7 @@ RUN curl "https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.z
 
 RUN git clone -b v2.0.0-beta1 https://github.com/tfutils/tfenv.git ~/.tfenv
 RUN echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >> ~/.bash_profile && ln -s ~/.tfenv/bin/* /usr/local/bin
-RUN tfenv install 0.12.30
+RUN tfenv install 0.13.7
 
 COPY entrypoint.sh /entrypoint.sh
 
