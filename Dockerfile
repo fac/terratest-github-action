@@ -7,16 +7,19 @@ ENV GO111MODULE auto
 RUN apt-get update && apt-get --no-install-recommends -y install \
     git \
     unzip \
-    python-pip \
+    python3 \
+    python3-setuptools \
+    python3-pip \
+    python3-venv \
     go-dep ;
 
 # Install gotestsum for parsing test output
-RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v0.4.0/gotestsum_0.4.0_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin gotestsum
+RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.7.0/gotestsum_1.7.0_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin gotestsum
 
 # Install awscli
 RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
     unzip awscli-bundle.zip && \
-    ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws;
+    python3 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws;
 
 # Install packer
 RUN curl "https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zip" -o "packer.zip" && \
