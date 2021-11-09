@@ -27,15 +27,21 @@ else
   tfenv install || true
 fi
 
-# Setup under GOPATH so dep etc works
-echo "Setting up GOPATH to include $PWD"
-CHECKOUT=$(basename "$PWD")
-mkdir -p $GODIR
-ln -s "$(pwd)" "${GODIR}/${CHECKOUT}"
+if [ -f "$PWD/test/go.mod" ]; then
+    echo "Detected go.mod in test directory. Using that for dependencies."
+    cd "$PWD/test"
+    gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128
+else
+    # Setup under GOPATH so dep etc works
+    echo "Setting up GOPATH to include $PWD"
+    CHECKOUT=$(basename "$PWD")
+    mkdir -p $GODIR
+    ln -s "$(pwd)" "${GODIR}/${CHECKOUT}"
 
-cd "${GODIR}/${CHECKOUT}/test"
-echo "Running go dep"
-dep ensure
+    cd "${GODIR}/${CHECKOUT}/test"
+    echo "Running go dep"
+    dep ensure
+fi
 
 echo "Starting tests"
 gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128
