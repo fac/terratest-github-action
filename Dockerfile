@@ -22,7 +22,7 @@ RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.
     python3 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws;
 
 # Install packer
-RUN curl "https://releases.hashicorp.com/packer/1.4.5/packer_1.4.5_linux_amd64.zip" -o "packer.zip" && \
+RUN curl "https://releases.hashicorp.com/packer/1.8.3/packer_1.8.3_linux_amd64.zip" -o "packer.zip" && \
     unzip packer.zip && \
     mv packer /usr/local/bin && \
     chmod a+x /usr/local/bin/packer
