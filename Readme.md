@@ -19,6 +19,36 @@ For authentication with AWS you can set the environment variables:
   * **AWS_ACCESS_KEY_ID**
   * **AWS_SECRET_ACCESS_KEY**
 
+You can pass in a list of modified modules from the source to only run those tests.
+```yaml
+name: Terratest
+on: [push]
+
+jobs:
+  test:
+    name: Checkout
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout step
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+
+      - name: Grab list of modified modules dynamically using diff against master
+        run: echo "modified_modules=$(git diff origin/master... --name-only examples/ modules/ | awk -F'/' '{print $(NF-1)}'| uniq | tr '\n' ' ')" >> "$GITHUB_ENV"
+
+      - name: Terratest
+        uses: fac/terratest-github-action@feature/only-test-changed-modules
+        with:
+          SSH_PRIV_KEY: ${{ secrets.TF_MODULES_SSH_KEY }}
+          modified_modules: ${{ env.modified_modules }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
+```
+
 This action typically creates and destroys actual infrastructure and should only be run against dedicated test / sandbox accounts.
 
 ```yaml
