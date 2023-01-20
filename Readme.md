@@ -38,15 +38,13 @@ jobs:
         run: echo "modified_modules=$(git diff origin/master... --name-only examples/ modules/ | awk -F'/' '{print $(NF-1)}'| uniq | tr '\n' ' ')" >> "$GITHUB_ENV"
 
       - name: Terratest
-        uses: fac/terratest-github-action@feature/only-test-changed-modules
+        uses: fac/terratest-github-action@2.x-rc
         with:
           SSH_PRIV_KEY: ${{ secrets.TF_MODULES_SSH_KEY }}
           modified_modules: ${{ env.modified_modules }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-
 ```
 
 This action typically creates and destroys actual infrastructure and should only be run against dedicated test / sandbox accounts.
