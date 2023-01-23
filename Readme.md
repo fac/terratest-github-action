@@ -35,7 +35,7 @@ jobs:
           fetch-depth: 0
 
       - name: Grab list of modified modules dynamically using diff against master
-        run: echo "modified_modules=$(git diff origin/master... --name-only examples/ modules/ | awk -F'/' '{print $(NF-1)}'| uniq | tr '\n' ' ')" >> "$GITHUB_ENV"
+        run: echo "modified_modules=$(git diff origin/master... --name-only examples/ modules/ | awk -F'/' '{print $(NF-1)}'| sort -u | tr '\n' ' ')" >> "$GITHUB_ENV"
 
       - name: Terratest
         uses: fac/terratest-github-action@2.x-rc

@@ -15,7 +15,7 @@ ssh-add
 ssh-keyscan github.com >>/root/.ssh/known_hosts
 
 # Allow terraform version override
-if [[ ! -z "$INPUT_TERRAFORM_VERSION" ]]; then
+if [[ -n "$INPUT_TERRAFORM_VERSION" ]]; then
   echo "terraform_version override set to $INPUT_TERRAFORM_VERSION"
   echo "$INPUT_TERRAFORM_VERSION" >.terraform-version
   tfenv install "$INPUT_TERRAFORM_VERSION"
@@ -30,12 +30,13 @@ go install
 
 # If we pass in a list of modified modules then only run those tests 
 # otherwise run all tests.
-if [[ ! -z "$modified_modules" ]]; then
-  package_name=`cat go.mod | grep module | awk '{print $2}'`
+if [[ -n "$modified_modules" ]]; then
+  package_name=$(grep "module" go.mod | awk '{print $2}')
   for i in $modified_modules; do
-    TESTS+=$(echo "$package_name/$i ")
+    TESTS+="$package_name/$i "
   done
   echo "Running tests: $TESTS"
+  # shellcheck disable=SC2086
   gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128 $TESTS
 else
   echo "Running all tests"
