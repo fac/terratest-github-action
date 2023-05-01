@@ -47,7 +47,8 @@ if [ "$INPUT_ONLY_TEST_MODIFIED" == "true" ]; then
     INPUT_TARGET_BRANCH="master"
   fi
   git_diff="$(git diff --name-only "origin/$INPUT_TARGET_BRANCH...")"
-  tests_to_run=$(python -c 'import sys, re; from pathlib import Path
+  tests_to_run=$(python3 -c '
+import sys, re; from pathlib import Path
 for input_line in sys.stdin:
   filename = input_line.rstrip()
   if filename.endswith(".tf"):
@@ -58,7 +59,8 @@ for input_line in sys.stdin:
     with open(filename, "r") as file:
       for line in file:
         if re.search(r"func Test[A-Z]", line):
-          print(f"-run {line.split()[1]}")' <<< "$git_diff" | sort -u)
+          print(f"-run {line.split()[1]}")
+' <<< "$git_diff" | sort -u)
   if [ -z "$tests_to_run" ]; then
     echo "No tests to run"
     exit 0
