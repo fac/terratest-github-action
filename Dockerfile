@@ -13,6 +13,9 @@ RUN apt-get update && apt-get --no-install-recommends -y install \
     python3-venv \
     go-dep ;
 
+# Newer git versions don't trust this directory due to the default permissions
+RUN git config --system --add safe.directory /github/workspace
+
 # Install gotestsum for parsing test output
 RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.7.0/gotestsum_1.7.0_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin gotestsum
 
