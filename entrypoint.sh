@@ -43,6 +43,7 @@ else
 fi
 
 if $INPUT_ONLY_TEST_MODIFIED; then
+  git_diff="$(git diff --name-only origin/HEAD)" 
   tests_to_run=$(python -c 'import sys, re; from pathlib import Path
 for input_line in sys.stdin:
   filename = input_line.rstrip()
@@ -54,7 +55,7 @@ for input_line in sys.stdin:
     with open(filename, "r") as file:
       for line in file:
         if re.search(r"func Test[A-Z]", line):
-          print(f"-run {line.split()[1]}")' <<< "$(git diff --name-only origin/HEAD)" | sort -u)
+          print(f"-run {line.split()[1]}")' <<< "$git_diff" | sort -u)
   if [ -z "$tests_to_run" ]; then
     echo "No tests to run"
     exit 0
