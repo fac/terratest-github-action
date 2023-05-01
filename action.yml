@@ -5,8 +5,9 @@ inputs:
   SSH_PRIV_KEY:
     description: "Private SSH key with access to private repos that tests will need access to"
     required: true
-  extra_terratest_args:
-    description: "Extra arguments to provide to terratest."
+  only_test_modified:
+    description: "Whether to test only the modified modules. This assumes your test functions are prefixed TestModuleName, and will run all tests for any _test.go files changed. Changes are calculated with git diff origin/HEAD, and requires the checkout action to clone the full repo."
+    type: boolean
   terraform_version:
     description: "If set override any .terraform-version file in the repo and use this specific version (can be latest)"
 runs:
