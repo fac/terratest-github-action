@@ -42,8 +42,11 @@ else
     dep ensure
 fi
 
-if $INPUT_ONLY_TEST_MODIFIED; then
-  git_diff="$(git diff --name-only origin/HEAD...)" 
+if [ "$INPUT_ONLY_TEST_MODIFIED" == "true" ]; then
+  if [ -z "$INPUT_TARGET_BRANCH" ]; then
+    INPUT_TARGET_BRANCH="master"
+  fi
+  git_diff="$(git diff --name-only "origin/$INPUT_TARGET_BRANCH...")"
   tests_to_run=$(python -c 'import sys, re; from pathlib import Path
 for input_line in sys.stdin:
   filename = input_line.rstrip()

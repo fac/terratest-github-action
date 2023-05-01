@@ -8,6 +8,9 @@ inputs:
   only_test_modified:
     description: "Whether to test only the modified modules. This assumes your test functions are prefixed TestModuleName, and will run all tests for any _test.go files changed. Changes are calculated with git diff origin/HEAD, and requires the checkout action to clone the full repo."
     type: boolean
+  target_branch:
+    description: "The target branch for which to calculate changesets to be tested. Defaults to master."
+    type: string
   terraform_version:
     description: "If set override any .terraform-version file in the repo and use this specific version (can be latest)"
 runs:
