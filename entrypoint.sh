@@ -49,17 +49,15 @@ for input_line in sys.stdin:
   if filename.endswith(".tf"):
     module_name = Path(filename).parent.name
     test_name = module_name.title().replace("-", "")
-    print(f"Test{test_name}")
+    print(f"-run Test{test_name}")
   elif filename.endswith("_test.go"):
     with open(filename, "r") as file:
       for line in file:
         if re.search(r"func Test[A-Z]", line):
-          print(line.split()[1])' <<< "$(git diff --name-only origin/HEAD)" | sort -u)
+          print(f"-run {line.split()[1]}")' <<< "$(git diff --name-only origin/HEAD)" | sort -u)
   if [ -z "$tests_to_run" ]; then
     echo "No tests to run"
     exit 0
-  else
-    tests_argument="-run $tests_to_run"
   fi
 fi
 
@@ -68,4 +66,4 @@ fi
 
 echo "Starting tests"
 # shellcheck disable=SC2086
-gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128 $tests_argument
+gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128 $tests_to_run
