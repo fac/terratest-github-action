@@ -43,7 +43,7 @@ else
 fi
 
 if $INPUT_ONLY_TEST_MODIFIED; then
-  git_diff="$(git diff --name-only origin/HEAD)" 
+  git_diff="$(git diff --name-only origin/HEAD...)" 
   tests_to_run=$(python -c 'import sys, re; from pathlib import Path
 for input_line in sys.stdin:
   filename = input_line.rstrip()
