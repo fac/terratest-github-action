@@ -27,21 +27,6 @@ else
   tfenv install || true
 fi
 
-if [ -f "$PWD/test/go.mod" ]; then
-    echo "Detected go.mod in test directory. Using that for dependencies."
-    cd "$PWD/test"
-else
-    # Setup under GOPATH so dep etc works
-    echo "Setting up GOPATH to include $PWD"
-    CHECKOUT=$(basename "$PWD")
-    mkdir -p $GODIR
-    ln -s "$(pwd)" "${GODIR}/${CHECKOUT}"
-
-    cd "${GODIR}/${CHECKOUT}/test"
-    echo "Running go dep"
-    dep ensure
-fi
-
 if [ "$INPUT_ONLY_TEST_MODIFIED" == "true" ]; then
   if [ -z "$INPUT_TARGET_BRANCH" ]; then
     INPUT_TARGET_BRANCH="master"
@@ -67,8 +52,20 @@ for input_line in sys.stdin:
   fi
 fi
 
+if [ -f "$PWD/test/go.mod" ]; then
+    echo "Detected go.mod in test directory. Using that for dependencies."
+    cd "$PWD/test"
+else
+    # Setup under GOPATH so dep etc works
+    echo "Setting up GOPATH to include $PWD"
+    CHECKOUT=$(basename "$PWD")
+    mkdir -p $GODIR
+    ln -s "$(pwd)" "${GODIR}/${CHECKOUT}"
 
-
+    cd "${GODIR}/${CHECKOUT}/test"
+    echo "Running go dep"
+    dep ensure
+fi
 
 echo "Starting tests"
 # shellcheck disable=SC2086
