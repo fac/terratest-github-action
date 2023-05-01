@@ -5,6 +5,8 @@ inputs:
   SSH_PRIV_KEY:
     description: "Private SSH key with access to private repos that tests will need access to"
     required: true
+  extra_terratest_args:
+    description: "Extra arguments to provide to terratest."
   terraform_version:
     description: "If set override any .terraform-version file in the repo and use this specific version (can be latest)"
 runs:

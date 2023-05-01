@@ -43,4 +43,5 @@ else
 fi
 
 echo "Starting tests"
-gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128
+# shellcheck disable=SC2086
+gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128 $INPUT_EXTRA_TERRATEST_ARGS 
