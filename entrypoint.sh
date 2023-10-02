@@ -43,4 +43,4 @@ else
 fi
 
 echo "Starting tests"
-gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128
+gotestsum --format standard-verbose -- -v -timeout "$INPUT_TIMEOUT" -parallel 128
