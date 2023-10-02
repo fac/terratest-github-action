@@ -7,6 +7,9 @@ inputs:
     required: true
   terraform_version:
     description: "If set override any .terraform-version file in the repo and use this specific version (can be latest)"
+  timeout:
+    description: "Timeout before cancelling the tests. Defaults to 50m."
+    default: "50m"
 runs:
   using: 'docker'
   image: 'Dockerfile'
