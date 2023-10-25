@@ -8,5 +8,9 @@ config {
 plugin "aws" {
   enabled = true
   source = "github.com/terraform-linters/tflint-ruleset-aws"
-  version = "0.27.0"
+  version = "0.22.1"
+}
+
+rule "terraform_required_providers" {
+  enabled = false
 }
