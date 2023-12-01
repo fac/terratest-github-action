@@ -1,8 +1,12 @@
-FROM golang:1.19-buster
+FROM golang:1.21-bookworm
+
+# As of v1.16 module-aware mode is enabled by default, regardless of whether a go.mod file is present in the current working directory or a parent directory.
+# More precisely, the GO111MODULE environment variable now defaults to on.
+ENV GO111MODULE auto
 
 RUN apt-get update && apt-get --no-install-recommends -y install \
     git \
-    unzip 
+    unzip
 
 # Install gotestsum for parsing test output
 RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.9.0/gotestsum_1.9.0_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin gotestsum

@@ -42,3 +42,9 @@ else
   echo "Running all tests"
   gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128
 fi
+<<<<<<< HEAD
+=======
+
+echo "Starting tests"
+gotestsum --format standard-verbose -- -v -timeout "$INPUT_TIMEOUT" -parallel 128
+>>>>>>> master
