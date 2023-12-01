@@ -7,15 +7,12 @@ inputs:
     required: true
   terraform_version:
     description: "If set override any .terraform-version file in the repo and use this specific version (can be latest)"
-<<<<<<< HEAD
   modified_modules:
     description: List of module names that have been updated. Used to only run tests for modified modules. If not specified all tests run.
     required: false
-=======
   timeout:
     description: "Timeout before cancelling the tests. Defaults to 50m."
     default: "50m"
->>>>>>> master
 runs:
   using: 'docker'
   image: 'Dockerfile'

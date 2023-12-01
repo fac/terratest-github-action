@@ -28,7 +28,7 @@ fi
 cd "$PWD/test"
 go install
 
-# If we pass in a list of modified modules then only run those tests 
+# If we pass in a list of modified modules then only run those tests
 # otherwise run all tests.
 if [[ -n "$modified_modules" ]]; then
   package_name=$(grep "module" go.mod | awk '{print $2}')
@@ -37,14 +37,8 @@ if [[ -n "$modified_modules" ]]; then
   done
   echo "Running tests: $TESTS"
   # shellcheck disable=SC2086
-  gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128 $TESTS
+  gotestsum --format standard-verbose -- -v -timeout "$INPUT_TIMEOUT" -parallel 128 $TESTS
 else
   echo "Running all tests"
-  gotestsum --format standard-verbose -- -v -timeout 50m -parallel 128
+  gotestsum --format standard-verbose -- -v -timeout "$INPUT_TIMEOUT" -parallel 128
 fi
-<<<<<<< HEAD
-=======
-
-echo "Starting tests"
-gotestsum --format standard-verbose -- -v -timeout "$INPUT_TIMEOUT" -parallel 128
->>>>>>> master
