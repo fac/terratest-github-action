@@ -1,4 +1,4 @@
-FROM golang:1.21-buster
+FROM golang:1.21-bookworm
 
 # As of v1.16 module-aware mode is enabled by default, regardless of whether a go.mod file is present in the current working directory or a parent directory.
 # More precisely, the GO111MODULE environment variable now defaults to on.
