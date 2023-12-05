@@ -6,23 +6,18 @@ ENV GO111MODULE auto
 
 RUN apt-get update && apt-get --no-install-recommends -y install \
     git \
-    unzip \
-    python3 \
-    python3-setuptools \
-    python3-pip \
-    python3-venv \
-    go-dep ;
+    unzip
 
 # Install gotestsum for parsing test output
-RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.7.0/gotestsum_1.7.0_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin gotestsum
+RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.11.0/gotestsum_1.11.0_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin gotestsum
 
 # Install awscli
-RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
-    unzip awscli-bundle.zip && \
-    python3 ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws;
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install
 
 # Install packer
-RUN curl "https://releases.hashicorp.com/packer/1.8.3/packer_1.8.3_linux_amd64.zip" -o "packer.zip" && \
+RUN curl "https://releases.hashicorp.com/packer/1.9.4/packer_1.9.4_linux_amd64.zip" -o "packer.zip" && \
     unzip packer.zip && \
     mv packer /usr/local/bin && \
     chmod a+x /usr/local/bin/packer
@@ -31,9 +26,9 @@ RUN curl "https://releases.hashicorp.com/packer/1.8.3/packer_1.8.3_linux_amd64.z
 RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb" && \
     dpkg -i session-manager-plugin.deb
 
-RUN git clone -b v2.0.0-beta1 https://github.com/tfutils/tfenv.git ~/.tfenv
+RUN git clone -b v3.0.0 https://github.com/tfutils/tfenv.git ~/.tfenv
 RUN echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >> ~/.bash_profile && ln -s ~/.tfenv/bin/* /usr/local/bin
-RUN tfenv install 0.13.7
+RUN tfenv install 1.5.3
 
 COPY entrypoint.sh /entrypoint.sh
 
