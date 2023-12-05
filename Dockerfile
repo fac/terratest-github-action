@@ -6,8 +6,7 @@ ENV GO111MODULE auto
 
 RUN apt-get update && apt-get --no-install-recommends -y install \
     git \
-    unzip \
-    go-dep
+    unzip
 
 # Install gotestsum for parsing test output
 RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.11.0/gotestsum_1.11.0_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin gotestsum
