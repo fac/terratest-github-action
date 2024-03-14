@@ -18,26 +18,24 @@ As defined in [action.yml](./action.yml).
 | timeout           | Timeout before cancelling the tests. Defaults to 50m.                                                                          | No       |
 
 
-This action typically creates and destroys actual infrastructure and should only be run against dedicated test / sandbox accounts.
+## Usage
+
+This action typically creates and destroys actual infrastructure and should only be run against dedicated test / sandbox AWS accounts. Create a role in the account with permissions to manage the resources defined in your module (or use a shared CI role).
+
+We provide [a reuseable workflow that runs this action](./.github/workflows/terratest.yml), after checking out the calling repo and assuming the passed AWS role. Here's an example of calling it:
 
 ```yaml
 name: Automated Testing
 on: [push]
 
 jobs:
-  test:
-    name: checkout
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout step
-        uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
-      - name: test execution step
-        uses: fac/terratest-github-action@master
-        with:
-          SSH_PRIV_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  test-infra:
+    uses: fac/terratest-github-action/.github/workflows/terratest.yml@1.x-stable
+    permissions:
+      id-token: write
+      contents: read
+    secrets:
+      SSH_PRIV_KEY: ${{ secrets.SSH_PRIV_KEY }}
+    with:
+      role-to-assume: ${{ inputs.role-to-assume }}
 ```
