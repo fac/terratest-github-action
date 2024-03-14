@@ -1,0 +1,50 @@
+name: Terratest
+
+on:
+  workflow_call:
+    inputs:
+      terraform-version:
+        description: "If set override any .terraform-version file in the repo and use this specific version (can be latest)"
+        required: false
+        default: ''
+        type: string
+      role-to-assume:
+        description: "AWS role to assume when running the tests"
+        required: false
+        type: string
+      aws-region:
+        description: "AWS region to use when assuming the role. Defaults to `eu-west-1`"
+        default: eu-west-1
+        required: false
+        type: string
+      timeout:
+        description: "Timeout before cancelling the tests. Defaults to 50m."
+        required: false
+        default: "50m"
+        type: string
+    secrets:
+      SSH_PRIV_KEY:
+        description: "Private SSH key with access to private repos that tests will need access to"
+        required: true
+
+jobs:
+  terratest:
+    name: Test infrastructure
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: checkout step
+        uses: actions/checkout@v4
+      - name: Configure AWS CI credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          role-to-assume: ${{ inputs.role-to-assume }}
+      - name: Terratest
+        uses: fac/terratest-github-action@1.x-stable
+        with:
+          SSH_PRIV_KEY: ${{ secrets.SSH_PRIV_KEY }}
+          terraform_version: ${{ inputs.terraform-version }}
+          timeout: ${{ inputs.timeout }}
