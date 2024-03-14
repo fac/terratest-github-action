@@ -1,18 +1,22 @@
 # Terraform module terratest action
 
-This action allows you to run terratest against a terraform module.
+This action allows you to run terratest against a Terraform module.
 
 
 ## Requirements
 
-This action expects the terraform module to use terratest and for the tests to be under the test directory in the root of the repository.
+This action expects the Terraform module to use terratest and for the tests to be under the `test` directory in the root of the repository.
 
 
-## Usage
+## Options
+As defined in [action.yml](./action.yml).
 
-The common workflow is running terratest to test terraform against AWS. The action accepts input paramters:
+|      Option       |                                            Description                                                                         | Required |
+|-------------------|--------------------------------------------------------------------------------------------------------------------------------|----------|
+| SSH_PRIV_KEY      | Private SSH key with access to private repos that tests will need access to                                                    | Yes      |
+| terraform_version | If set, override any .terraform-version file in the repo and use this specific version. `latest` will use most-recent version. | No       |
+| timeout           | Timeout before cancelling the tests. Defaults to 50m.                                                                          | No       |
 
-  * **SSH_PRIV_KEY** - SSH private key with clone access to any further private repositories that may be needed
 
 This action typically creates and destroys actual infrastructure and should only be run against dedicated test / sandbox accounts.
 

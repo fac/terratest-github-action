@@ -6,7 +6,7 @@ inputs:
     description: "Private SSH key with access to private repos that tests will need access to"
     required: true
   terraform_version:
-    description: "If set override any .terraform-version file in the repo and use this specific version (can be latest)"
+    description: "If set, override any .terraform-version file in the repo and use this specific version. `latest` will use most-recent version"
   timeout:
     description: "Timeout before cancelling the tests. Defaults to 50m."
     default: "50m"
